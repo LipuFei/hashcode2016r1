@@ -5,14 +5,12 @@
     <style>
         * {
             font-family: Verdana, monospace;
-            font-size: 10px;
+            font-size: 6px;
+            color: #303030;
         }
 
-        td {
-            border: 1px dashed gray;
-            min-width: 16px;
-            min-height: 16px;
-            text-align: center;
+        body {
+            background-color: #000000;
         }
 
         .warehouse {
@@ -22,30 +20,36 @@
     </style>
 </head>
 <body>
-<table>
-    <?php
-    $warehouses = [
-        [5, 5],
-        [9, 15],
-    ];
+<?php
+$warehouses = [
+    [113, 179],
+    [234, 599],
+    [195, 89],
+    [215, 207],
+    [220, 326],
+    [182, 193],
+    [75, 418],
+    [228, 140],
+    [310, 26],
+    [297, 423],
+];
 
-    $rendered_warehouses = [];
-    foreach ($warehouses as $id => $location) {
-        $rendered_warehouses[$location[0]][$location[1]] = $id;
-    }
+$rendered_warehouses = [];
+foreach ($warehouses as $id => $location) {
+    $rendered_warehouses[$location[0]][$location[1]] = $id;
+}
 
-    for ($x = 0; $x < 600; $x++) {
-        echo '<tr>' . PHP_EOL;
-        for ($y = 0; $y < 400; $y++) {
-            $code = '&#9632;';
-            if (isset($rendered_warehouses[$x][$y])) {
-                $code = '<span class="warehouse">&#8962;</span>';
-            }
-            echo '<td title="' . $x . ',' . $y . '">' . $code . '</td>' . PHP_EOL;
+for ($i = 0; $i < 400; $i++) {
+    for ($j = 0; $j < 600; $j++) {
+        $code = '&#9632;';
+        if (isset($rendered_warehouses[$i][$j])) {
+            $code = '<span class="warehouse">&#8962;</span>';
         }
-        echo '</tr>' . PHP_EOL;
+        echo '<span title="' . $i . ',' . $j . '">' . $code . '</span>';
     }
-    ?>
+    echo '<br>' . PHP_EOL;
+}
+?>
 </table>
 </body>
 </html>
