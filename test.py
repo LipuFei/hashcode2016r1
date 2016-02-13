@@ -44,9 +44,9 @@ if __name__ == '__main__':
         print u"%d  %s" % (wid, wh[u'location'])
         wid += 1
 
-    from hashcode2016r1 import sim
+    from hashcode2016r1 import sim_busy
     to_remove = [1, 8]
-    cmd_lines = sim.sim(data, 70, to_remove)
+    cmd_lines = sim_busy.sim(data, 70, to_remove)
 
     cmd_lines = [u'%d' % len(cmd_lines)] + cmd_lines
     cmd_lines = [l + os.linesep for l in cmd_lines]
