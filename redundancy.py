@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import codecs
 import os
-import sys
 
 from hashcode2016r1 import parser
 from hashcode2016r1 import data_processor
@@ -36,7 +35,7 @@ def analyse_data(data_dict, file_dict):
 
 
 if __name__ == '__main__':
-    ds_name = sys.argv[1].decode('utf-8')
+    ds_name = u'redundancy'
 
     data, _ = parse_file(ds_name)
     wid = 0
@@ -44,11 +43,10 @@ if __name__ == '__main__':
         print u"%d  %s" % (wid, wh[u'location'])
         wid += 1
 
-    from hashcode2016r1 import sim_busy
-    to_remove = [1, 8]
-    cmd_lines = sim_busy.sim(data, 70, to_remove)
+    from hashcode2016r1 import sim_redundancy
+    cmd_lines = sim_redundancy.sim(data, 10000)
 
     cmd_lines = [u'%d' % len(cmd_lines)] + cmd_lines
     cmd_lines = [l + os.linesep for l in cmd_lines]
-    with codecs.open(u'%s_rm%s_80.txt' % (ds_name, u','.join(u'%d' % i for i in to_remove)), 'wb', encoding='utf-8') as f:
+    with codecs.open(u'%s.txt' % ds_name, 'wb', encoding='utf-8') as f:
         f.writelines(cmd_lines)
