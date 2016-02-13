@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import codecs
 import os
-import sys
 
 from hashcode2016r1 import parser
 from hashcode2016r1 import data_processor
@@ -31,12 +30,8 @@ def parse_file(dataset_name):
     return data_dict, file_dict
 
 
-def analyse_data(data_dict, file_dict):
-    pass
-
-
 if __name__ == '__main__':
-    ds_name = sys.argv[1].decode('utf-8')
+    ds_name = u'busy_day'
 
     data, _ = parse_file(ds_name)
     wid = 0
@@ -46,9 +41,11 @@ if __name__ == '__main__':
 
     from hashcode2016r1 import sim
     to_remove = [1, 8]
-    cmd_lines = sim.sim(data, 70, to_remove)
+    move_to = 4
+    distance = 70
+    cmd_lines = sim.sim(data, distance, to_remove, move_to)
 
     cmd_lines = [u'%d' % len(cmd_lines)] + cmd_lines
     cmd_lines = [l + os.linesep for l in cmd_lines]
-    with codecs.open(u'%s_rm%s_80.txt' % (ds_name, u','.join(u'%d' % i for i in to_remove)), 'wb', encoding='utf-8') as f:
+    with codecs.open(u'%s_rm%s_%d.txt' % (ds_name, u','.join(u'%d' % i for i in to_remove), distance), 'wb', encoding='utf-8') as f:
         f.writelines(cmd_lines)
