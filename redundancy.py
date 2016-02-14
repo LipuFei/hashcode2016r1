@@ -20,6 +20,7 @@ if __name__ == '__main__':
 
     from hashcode2016r1.algorithms import redundancy
     alg = redundancy.RedundancyAlgorithm(data)
+    alg.pre_process()
     cmd_lines = alg.generate()
 
     cmd_lines = [u'%d' % len(cmd_lines)] + cmd_lines

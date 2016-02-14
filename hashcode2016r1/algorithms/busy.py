@@ -6,13 +6,8 @@ from .tools import get_unique_item_list
 
 class BusyAlgorithm(Algorithm):
 
-    def __init__(self, data_dict, wo_distance, wids_to_remove=None, move_to_wids=None, move_threshold=1000):
+    def __init__(self, data_dict):
         super(BusyAlgorithm, self).__init__(data_dict)
-
-        self.wo_distance = wo_distance
-        self.wids_to_remove = wids_to_remove
-        self.move_to_wids = move_to_wids
-        self.move_threshold = move_threshold
 
     def pre_process(self):
         super(BusyAlgorithm, self).pre_process()

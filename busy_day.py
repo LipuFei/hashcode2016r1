@@ -21,13 +21,11 @@ if __name__ == '__main__':
 
     from hashcode2016r1.algorithms import busy
 
-    to_remove = [1, 6, 9, 8]
-    move_to = [2, 3, 4, 7, 5]
-    distance = 100000
-    alg = busy.BusyAlgorithm(data, distance, to_remove, move_to, 50)
+    alg = busy.BusyAlgorithm(data)
+    alg.pre_process()
     cmd_lines = alg.generate()
 
     cmd_lines = [u'%d' % len(cmd_lines)] + cmd_lines
     cmd_lines = [l + os.linesep for l in cmd_lines]
-    with codecs.open(u'%s_rm%s_%d.txt' % (ds_name, u','.join(u'%d' % i for i in to_remove), distance), 'wb', encoding='utf-8') as f:
+    with codecs.open(u'%s.txt' % ds_name, 'wb', encoding='utf-8') as f:
         f.writelines(cmd_lines)

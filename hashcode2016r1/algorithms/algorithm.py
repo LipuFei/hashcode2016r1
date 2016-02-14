@@ -25,6 +25,7 @@ class Algorithm(object):
         drone_list = [{u'id': i,
                        u'location': warehouse_list[0][u'location'][:],
                        u'payloads': {},
+                       u'max_payload': self.data_dict[u'max_payload'],
                        u'weight': 0,
                        u'next_turn': 0}
                       for i in xrange(self.data_dict[u'drones'])]
