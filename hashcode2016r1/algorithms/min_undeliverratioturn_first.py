@@ -120,6 +120,13 @@ class MinUndeliverRatioTurnsAlgorithm(Algorithm):
             command_lines += deliver_cmd_list
 
             # schedule the next drone
-            current_drone_id = self.get_next_drone_idx(current_drone_id)
+            min_drone = None
+            for drone in drone_list:
+                if min_drone is None:
+                    min_drone = drone
+                elif min_drone[u'next_turn'] > drone[u'next_turn']:
+                    min_drone = drone
+            current_drone_id = min_drone[u'id']
+            #current_drone_id = self.get_next_drone_idx(current_drone_id)
 
         return command_lines
