@@ -3,48 +3,24 @@ import codecs
 import os
 
 from hashcode2016r1 import parser
-from hashcode2016r1 import data_processor
 
 
 def parse_file(dataset_name):
     in_file = os.path.join(ds_name, u'%s.in' % dataset_name)
-    item_weight_file = os.path.join(ds_name, u'%s_item_weight.csv' % dataset_name)
-    warehouse_file = os.path.join(ds_name, u'%s_warehouse.csv' % dataset_name)
-    order_file = os.path.join(ds_name, u'%s_order.csv' % dataset_name)
-    warehouse_order_radius_file = os.path.join(ds_name, u'%s_warehouse_order_radius.csv' % dataset_name)
-
     data_dict = parser.parse_input_file(in_file)
-    #data_processor.create_item_weight_csv(data_dict, item_weight_file)
-    #data_processor.create_warehouse_csv(data_dict, warehouse_file)
-    #data_processor.create_order_csv(data_dict, order_file)
-    #data_processor.create_warehouse_order_radius_csv(data_dict, warehouse_order_radius_file,
-    #                                                 [i for i in xrange(5, 300, 5)])
-
-    data_processor.print_data_summary(data_dict)
-
-    file_dict = {u'in': in_file,
-                 u'item_weight': item_weight_file,
-                 u'warehouse': warehouse_file,
-                 u'order': order_file}
-
-    return data_dict, file_dict
-
-
-def analyse_data(data_dict, file_dict):
-    pass
+    return data_dict
 
 
 if __name__ == '__main__':
     ds_name = u'redundancy'
+    data = parse_file(ds_name)
 
-    data, _ = parse_file(ds_name)
-    wid = 0
     for wh in data[u'warehouse_list']:
-        print u"%d  %s" % (wid, wh[u'location'])
-        wid += 1
+        print u"%d  %s" % (wh[u'id'], wh[u'location'])
 
-    from hashcode2016r1 import sim_redundancy
-    cmd_lines = sim_redundancy.sim(data, 10000)
+    from hashcode2016r1.algorithms import redundancy
+    alg = redundancy.RedundancyAlgorithm(data)
+    cmd_lines = alg.generate()
 
     cmd_lines = [u'%d' % len(cmd_lines)] + cmd_lines
     cmd_lines = [l + os.linesep for l in cmd_lines]

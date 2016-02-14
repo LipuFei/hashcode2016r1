@@ -1,0 +1,7 @@
+map dimension: 240 400
+drones: 20
+max_payload: 200
+product_types: 1000
+warehouses: 1
+orders: 800
+turns: 144612

@@ -9,7 +9,8 @@ def parse_input_file(file_name):
         for i in range(warehouses):
             location = [int(v) for v in f.readline().strip().split(' ')]
             item_count_list = [int(v) for v in f.readline().strip().split(' ')]
-            warehouse_list.append({u'location': location,
+            warehouse_list.append({u'id': i,
+                                   u'location': location,
                                    u'item_count_list': item_count_list})
 
         orders = int(f.readline().strip())
@@ -18,7 +19,8 @@ def parse_input_file(file_name):
             location = [int(v) for v in f.readline().strip().split(' ')]
             items = int(f.readline().strip())
             item_types = [int(v) for v in f.readline().strip().split(' ')]
-            order_list.append({u'location': location,
+            order_list.append({u'id': i,
+                               u'location': location,
                                u'items': items,
                                u'item_types': item_types})
 

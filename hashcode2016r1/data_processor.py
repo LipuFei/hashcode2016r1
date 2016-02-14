@@ -1,16 +1,22 @@
 import codecs
 import csv
 import math
+import os
 
 
-def print_data_summary(data_dict):
-    print u"map dimension: %s %s" % (data_dict[u'rows'], data_dict[u'columns'])
-    print u"drones: %s" % data_dict[u'drones']
-    print u"max_payload: %s" % data_dict[u'max_payload']
-    print u"product_types: %s" % data_dict[u'product_types']
-    print u"warehouses: %s" % data_dict[u'warehouses']
-    print u"orders: %s" % data_dict[u'orders']
-    print u"turns: %s" % data_dict[u'turns']
+def create_data_summary(data_dict, file_name):
+    msg_list = [u"map dimension: %s %s" % (data_dict[u'rows'], data_dict[u'columns']),
+                u"drones: %s" % data_dict[u'drones'],
+                u"max_payload: %s" % data_dict[u'max_payload'],
+                u"product_types: %s" % data_dict[u'product_types'],
+                u"warehouses: %s" % data_dict[u'warehouses'],
+                u"orders: %s" % data_dict[u'orders'],
+                u"turns: %s" % data_dict[u'turns']]
+
+    with codecs.open(file_name, 'wb', encoding='utf-8') as f:
+        f.writelines([msg + os.linesep for msg in msg_list])
+    for msg in msg_list:
+        print msg
 
 
 def create_item_weight_csv(data_dict, csv_file):
