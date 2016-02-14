@@ -16,9 +16,11 @@ if __name__ == '__main__':
     ds_name = u'mother_of_all_warehouses'
     data = parse_file(ds_name)
 
-    from hashcode2016r1.algorithms import mother
+    from hashcode2016r1.algorithms import mother, order_weight_first, min_undeliverratioturn_first
 
-    alg = mother.MotherAlgorithm(data)
+    #alg = mother.MotherAlgorithm(data)
+    #alg = order_weight_first.OrderWeightFirstAlgorithm(data, angle_threshold=45.0)
+    alg = min_undeliverratioturn_first.MinUndeliverRatioTurnsAlgorithm(data, angle_threshold=45.0)
     alg.pre_process()
     cmd_lines = alg.generate()
 

@@ -18,8 +18,12 @@ if __name__ == '__main__':
     for wh in data[u'warehouse_list']:
         print u"%d  %s" % (wh[u'id'], wh[u'location'])
 
-    from hashcode2016r1.algorithms import redundancy
-    alg = redundancy.RedundancyAlgorithm(data)
+    from hashcode2016r1.algorithms import redundancy, min_drone_turns, order_weight_first, min_undeliverratioturn_first
+
+    #alg = redundancy.RedundancyAlgorithm(data)
+    #alg = busy.BusyAlgorithm(data, angle_threshold=60.0)
+    #alg = order_weight_first.OrderWeightFirstAlgorithm(data, angle_threshold=45.0)
+    alg = min_undeliverratioturn_first.MinUndeliverRatioTurnsAlgorithm(data, angle_threshold=45.0)
     alg.pre_process()
     cmd_lines = alg.generate()
 

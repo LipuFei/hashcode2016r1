@@ -70,12 +70,3 @@ class RedundancyAlgorithm(Algorithm):
             current_drone_id = self.get_next_drone_idx(current_drone_id)
 
         return command_lines
-
-
-def get_order_list_close_to_warehouses(order_list, warehouse_list, threshold):
-    order_id_set = set()
-    for wh in warehouse_list:
-        for order in order_list:
-            if calculate_distance(order[u'location'], wh[u'location']) <= threshold:
-                order_id_set.add(order[u'id'])
-    return order_id_set

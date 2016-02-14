@@ -19,9 +19,10 @@ if __name__ == '__main__':
     for wh in sorted(data[u'warehouse_list'], key=lambda w: w[u'location'][1]):
         print u"%d  %s" % (wh[u'id'], wh[u'location'])
 
-    from hashcode2016r1.algorithms import busy
+    from hashcode2016r1.algorithms import min_drone_turns, min_undeliverratioturn_first
 
-    alg = busy.BusyAlgorithm(data)
+    #alg = min_drone_turns.MinDroneTurnsAlgorithm(data, angle_threshold=60.0)
+    alg = min_undeliverratioturn_first.MinUndeliverRatioTurnsAlgorithm(data, angle_threshold=45.0)
     alg.pre_process()
     cmd_lines = alg.generate()
 

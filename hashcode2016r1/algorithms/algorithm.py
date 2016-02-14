@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
+from .common import calculate_distance
+
 
 class Algorithm(object):
     __metaclass__ = ABCMeta
@@ -34,6 +36,10 @@ class Algorithm(object):
         return self.data_dict[u'product_type_weights'][item_id]
 
     def pre_process(self):
+        # distance normalizer
+        self.data_dict[u'max_distance'] = calculate_distance([0, 0],
+                                                             [self.data_dict[u'rows'], self.data_dict[u'columns']])
+
         # warehouse list
         warehouse_list = self.data_dict[u'warehouse_list']
 

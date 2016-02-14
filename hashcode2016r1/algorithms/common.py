@@ -17,5 +17,38 @@ def calculate_distance(loc1, loc2):
     return math.ceil(math.sqrt((loc1[0] - loc2[0])**2 + (loc1[1] - loc2[1])**2))
 
 
+def calculate_vector(loc1, loc2):
+    return [loc2[0] - loc1[0], loc2[1] - loc1[1]]
+
+
+def calculate_dot_product(vec1, vec2):
+    return vec1[0] * vec2[0] + vec1[1] * vec2[1]
+
+
 def sort_by_distance(location, data_list, reverse=False):
     return sorted(data_list, key=lambda d: calculate_distance(location, d[u'location']), reverse=reverse)
+
+
+def calculate_angle(location1, location2, location3, angle_threshold):
+    vector1 = calculate_vector(location1, location2)
+    vector2 = calculate_vector(location1, location3)
+    edge1 = calculate_distance(location1, location2)
+    edge2 = calculate_distance(location1, location3)
+
+    if edge2 - edge1 > 0:
+        return 10000000
+
+    dp = calculate_dot_product(vector1, vector2)
+    angle = math.acos(dp / edge1 / edge2) / math.pi * 180.0
+    if angle > angle_threshold:
+        return 10000000
+
+    edge3 = calculate_distance(location2, location3)
+
+    # return the location's distance towards the line
+    #return math.sin(angle/180.0*math.pi) * edge2
+    return edge2 + edge3
+
+
+def sort_by_distance_to_line(loc1, loc2, data_list, angle_threshold):
+    return sorted(data_list, key=lambda d: calculate_angle(loc1, loc2, d[u'location'], angle_threshold))
