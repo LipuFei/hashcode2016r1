@@ -11,6 +11,22 @@ class Algorithm(object):
         self.drone_list = []
         self.order_list = []
 
+    def get_order(self, order_id):
+        order = None
+        for o in self.order_list:
+            if o[u'id'] == order_id:
+                order = o
+                break
+        return order
+
+    def get_warehouse(self, warehouse_id):
+        warehouse = None
+        for wh in self.warehouse_list:
+            if wh[u'id'] == warehouse_id:
+                warehouse = wh
+                break
+        return warehouse
+
     def get_next_drone_idx(self, drone_idx):
         return (drone_idx + 1) % self.data_dict[u'drones']
 
