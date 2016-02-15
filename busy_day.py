@@ -22,7 +22,8 @@ if __name__ == '__main__':
     from hashcode2016r1.algorithms import min_drone_turns, min_undeliverratioturn_first
 
     #alg = min_drone_turns.MinDroneTurnsAlgorithm(data, angle_threshold=60.0)
-    alg = min_undeliverratioturn_first.MinUndeliverRatioTurnsAlgorithm(data, angle_threshold=45.0)
+    alg = min_undeliverratioturn_first.MinUndeliverRatioTurnsAlgorithm(data, angle_threshold=45.0,
+                                                                       w1=1.0, w2=1.0)
     alg.pre_process()
     cmd_lines = alg.generate()
 

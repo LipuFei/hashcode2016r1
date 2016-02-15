@@ -36,12 +36,12 @@ def calculate_angle(location1, location2, location3, angle_threshold):
     edge2 = calculate_distance(location1, location3)
 
     if edge2 - edge1 > 0:
-        return 10000000
+        return
 
     dp = calculate_dot_product(vector1, vector2)
     angle = math.acos(dp / edge1 / edge2) / math.pi * 180.0
     if angle > angle_threshold:
-        return 10000000
+        return
 
     edge3 = calculate_distance(location2, location3)
 
@@ -51,4 +51,5 @@ def calculate_angle(location1, location2, location3, angle_threshold):
 
 
 def sort_by_distance_to_line(loc1, loc2, data_list, angle_threshold):
-    return sorted(data_list, key=lambda d: calculate_angle(loc1, loc2, d[u'location'], angle_threshold))
+    new_data_list = [d for d in data_list if calculate_angle(loc1, loc2, d[u'location'], angle_threshold) is not None]
+    return sorted(new_data_list, key=lambda d: calculate_angle(loc1, loc2, d[u'location'], angle_threshold))

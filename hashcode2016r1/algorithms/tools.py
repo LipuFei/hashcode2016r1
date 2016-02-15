@@ -152,7 +152,7 @@ def get_delivery_with_min_weight(drone, order_list, warehouse_list, data_dict, d
     return min_delivery_dict
 
 
-def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_list, data_dict, drone_weight=0):
+def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_list, data_dict, drone_weight=0, w1=1.0, w2=1.0):
     """
     Finds the delivery that takes the minimum undelivered-ratio-turn metric.
     """
@@ -164,7 +164,9 @@ def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_li
                 continue
             delivery_dict[u'normalized_travel_turns'] = float(delivery_dict[u'travel_turns']) / data_dict[u'max_distance']
             #delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'normalized_travel_turns']
-            delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) + delivery_dict[u'normalized_travel_turns']
+            p1 = w1 * (1 - delivery_dict[u'deliver_ratio'])
+            p2 = w2 * delivery_dict[u'normalized_travel_turns']
+            delivery_dict[u'undelivered-ratio-turn'] = p1 + p2
 
             if min_delivery_dict is None:
                 min_delivery_dict = delivery_dict
@@ -180,16 +182,13 @@ def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_li
     return min_delivery_dict
 
 
-def get_intermediate_delivery_with_min_turns(drone, order, warehouse, order_list, data_dict, drone_weight, angle_threshold):
+def get_intermediate_delivery_with_min_turns(drone, order, warehouse, order_list, data_dict, drone_weight, angle_threshold, w1=1.0, w2=1.0):
     """
     Find the intermediate delivery for a given delivery with the minimum extra turns.
     """
     ol = sort_by_distance_to_line(warehouse[u'location'], order[u'location'], order_list, angle_threshold)
     min_delivery_dict = None
-    ratio = 0.4
-    oid_bound = int(math.ceil(len(ol) * ratio))
-    for oid in xrange(oid_bound):
-        o = ol[oid]
+    for o in ol:
         if o[u'id'] == order[u'id']:
             continue
         delivery_dict = get_delivery_details(drone, o, warehouse, data_dict, drone_weight=drone_weight)
@@ -198,7 +197,9 @@ def get_intermediate_delivery_with_min_turns(drone, order, warehouse, order_list
 
         delivery_dict[u'normalized_travel_turns'] = float(delivery_dict[u'travel_turns']) / data_dict[u'max_distance']
         #delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'travel_turns']
-        delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'normalized_travel_turns']
+        p1 = w1 * (1 - delivery_dict[u'deliver_ratio'])
+        p2 = w2 * delivery_dict[u'normalized_travel_turns']
+        delivery_dict[u'undelivered-ratio-turn'] = p1 + p2
 
         if min_delivery_dict is None:
             min_delivery_dict = delivery_dict
