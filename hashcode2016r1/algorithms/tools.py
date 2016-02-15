@@ -163,8 +163,9 @@ def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_li
             if delivery_dict is None:
                 continue
             delivery_dict[u'normalized_travel_turns'] = float(delivery_dict[u'travel_turns']) / data_dict[u'max_distance']
-            #delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'travel_turns']
-            delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'normalized_travel_turns']
+            #delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'normalized_travel_turns']
+            delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) + delivery_dict[u'normalized_travel_turns']
+
             if min_delivery_dict is None:
                 min_delivery_dict = delivery_dict
                 continue
