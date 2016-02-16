@@ -152,7 +152,8 @@ def get_delivery_with_min_weight(drone, order_list, warehouse_list, data_dict, d
     return min_delivery_dict
 
 
-def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_list, data_dict, drone_weight=0, w1=1.0, w2=1.0):
+def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_list, data_dict, drone_weight=0,
+                                                 w1=1.0, w2=1.0, w3=1.0):
     """
     Finds the delivery that takes the minimum undelivered-ratio-turn metric.
     """
@@ -166,7 +167,8 @@ def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_li
             #delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'normalized_travel_turns']
             p1 = w1 * (1 - delivery_dict[u'deliver_ratio'])
             p2 = w2 * delivery_dict[u'normalized_travel_turns']
-            delivery_dict[u'undelivered-ratio-turn'] = p1 + p2
+            p3 = w3 * order[u'location_score']
+            delivery_dict[u'undelivered-ratio-turn'] = p1 + p2 + p3
 
             if min_delivery_dict is None:
                 min_delivery_dict = delivery_dict
@@ -182,7 +184,8 @@ def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_li
     return min_delivery_dict
 
 
-def get_intermediate_delivery_with_min_turns(drone, order, warehouse, order_list, data_dict, drone_weight, angle_threshold, w1=1.0, w2=1.0):
+def get_intermediate_delivery_with_min_turns(drone, order, warehouse, order_list, data_dict, drone_weight,
+                                             angle_threshold, w1=1.0, w2=1.0, w3=1.0):
     """
     Find the intermediate delivery for a given delivery with the minimum extra turns.
     """
@@ -199,7 +202,8 @@ def get_intermediate_delivery_with_min_turns(drone, order, warehouse, order_list
         #delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'travel_turns']
         p1 = w1 * (1 - delivery_dict[u'deliver_ratio'])
         p2 = w2 * delivery_dict[u'normalized_travel_turns']
-        delivery_dict[u'undelivered-ratio-turn'] = p1 + p2
+        p3 = w3 * order[u'location_score']
+        delivery_dict[u'undelivered-ratio-turn'] = p1 + p2 + p3
 
         if min_delivery_dict is None:
             min_delivery_dict = delivery_dict

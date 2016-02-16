@@ -9,11 +9,12 @@ class MinUndeliverRatioTurnsAlgorithm(Algorithm):
     weight-turn = total weight of the deliver * total turns
     """
 
-    def __init__(self, data_dict, w1=1.0, w2=1.0, angle_threshold=45.0):
+    def __init__(self, data_dict, w1=1.0, w2=1.0, w3=1.0, angle_threshold=45.0):
         super(MinUndeliverRatioTurnsAlgorithm, self).__init__(data_dict)
         self.angle_threshold = angle_threshold
         self.w1 = w1
         self.w2 = w2
+        self.w3 = w3
 
     def pre_process(self):
         super(MinUndeliverRatioTurnsAlgorithm, self).pre_process()
@@ -46,7 +47,7 @@ class MinUndeliverRatioTurnsAlgorithm(Algorithm):
 
             # find the delivery that takes the least turns
             this_delivery = get_delivery_with_min_undelivered_ratio_turn(this_drone, order_list, warehouse_list, data_dict,
-                                                                         w1=self.w1, w2=self.w2)
+                                                                         w1=self.w1, w2=self.w2, w3=self.w3)
             if this_delivery is None:
                 current_drone_id = self.get_next_drone_idx(current_drone_id)
                 continue
@@ -76,7 +77,7 @@ class MinUndeliverRatioTurnsAlgorithm(Algorithm):
                                                                       order_list, data_dict,
                                                                       this_delivery[u'total_weight'],
                                                                       self.angle_threshold,
-                                                                      w1=self.w1, w2=self.w2)
+                                                                      w1=self.w1, w2=self.w2, w3=self.w3)
             if inter_delivery is not None:
                 # append this delivery to the commands
                 t_o = self.get_order(inter_delivery[u'oid'])

@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from .common import calculate_distance
+from .common import calculate_distance, calculate_location_score
 
 
 class Algorithm(object):
@@ -53,12 +53,19 @@ class Algorithm(object):
                       for i in xrange(self.data_dict[u'drones'])]
 
         # order list
+        max_order_to_warehouse_distance = 0.0
         order_list = self.data_dict[u'order_list']
         for order in order_list:
+            # convert product types to dict and calculate total weight
             total_weight = 0
             for item in order[u'item_types']:
                 total_weight += self.data_dict[u'product_type_weights'][item]
             order[u'total_weight'] = total_weight
+
+            for wh in warehouse_list:
+                distance = calculate_distance(order[u'location'], wh[u'location'])
+                if max_order_to_warehouse_distance < distance:
+                    max_order_to_warehouse_distance = distance
 
             item_types = {}
             # convert item_types into a dict
@@ -67,6 +74,12 @@ class Algorithm(object):
                     item_types[item] = 0
                 item_types[item] += 1
             order[u'item_types'] = item_types
+
+        self.data_dict[u'max_order_to_warehouse_distance'] = max_order_to_warehouse_distance
+        # calculate the location scores
+        for order in order_list:
+            order[u'location_score'] = calculate_location_score(order[u'location'], warehouse_list,
+                                                                max_order_to_warehouse_distance)
 
         self.warehouse_list = warehouse_list
         self.drone_list = drone_list

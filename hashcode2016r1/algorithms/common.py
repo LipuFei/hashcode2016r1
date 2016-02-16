@@ -53,3 +53,15 @@ def calculate_angle(location1, location2, location3, angle_threshold):
 def sort_by_distance_to_line(loc1, loc2, data_list, angle_threshold):
     new_data_list = [d for d in data_list if calculate_angle(loc1, loc2, d[u'location'], angle_threshold) is not None]
     return sorted(new_data_list, key=lambda d: calculate_angle(loc1, loc2, d[u'location'], angle_threshold))
+
+
+def calculate_location_score(location, warehouse_list, max_order_to_warehouse_distance):
+    # the normalized average of the distance between this location to all warehouses.
+    distance_sum = 0.0
+    for warehouse in warehouse_list:
+        distance = calculate_distance(location, warehouse[u'location'])
+        normalized_distance = float(distance) / max_order_to_warehouse_distance
+        distance_sum += normalized_distance
+    distance_sum /= len(warehouse_list)
+
+    return distance_sum
