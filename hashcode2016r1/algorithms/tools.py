@@ -1,6 +1,6 @@
 import math
 
-from .common import calculate_distance, sort_by_distance_to_line
+from .common import calculate_distance, sort_by_distance_to_line, calculate_to_nearest_warehouse
 
 
 def get_unique_item_list(wid_list, warehouse_list):
@@ -165,9 +165,14 @@ def get_delivery_with_min_undelivered_ratio_turn(drone, order_list, warehouse_li
                 continue
             delivery_dict[u'normalized_travel_turns'] = float(delivery_dict[u'travel_turns']) / data_dict[u'max_distance']
             #delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'normalized_travel_turns']
+
+            to_nearest_warehouse = calculate_to_nearest_warehouse(order[u'location'], warehouse_list,
+                                                                  data_dict[u'max_order_to_warehouse_distance'])
+
             p1 = w1 * (1 - delivery_dict[u'deliver_ratio'])
             p2 = w2 * delivery_dict[u'normalized_travel_turns']
-            p3 = w3 * order[u'location_score']
+            p3 = w3 * to_nearest_warehouse
+
             delivery_dict[u'undelivered-ratio-turn'] = p1 + p2 + p3
 
             if min_delivery_dict is None:
@@ -202,8 +207,8 @@ def get_intermediate_delivery_with_min_turns(drone, order, warehouse, order_list
         #delivery_dict[u'undelivered-ratio-turn'] = (1 - delivery_dict[u'deliver_ratio']) * delivery_dict[u'travel_turns']
         p1 = w1 * (1 - delivery_dict[u'deliver_ratio'])
         p2 = w2 * delivery_dict[u'normalized_travel_turns']
-        p3 = w3 * order[u'location_score']
-        delivery_dict[u'undelivered-ratio-turn'] = p1 + p2 + p3
+        #p3 = w3 * order[u'location_score']
+        delivery_dict[u'undelivered-ratio-turn'] = p1 + p2
 
         if min_delivery_dict is None:
             min_delivery_dict = delivery_dict

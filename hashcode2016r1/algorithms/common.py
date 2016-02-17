@@ -65,3 +65,19 @@ def calculate_location_score(location, warehouse_list, max_order_to_warehouse_di
     distance_sum /= len(warehouse_list)
 
     return distance_sum
+
+
+def calculate_to_nearest_warehouse(location, warehouse_list, max_order_to_warehouse_distance):
+    min_distance = None
+    for warehouse in warehouse_list:
+        if all(d == 0 for d in warehouse[u'item_count_list']):
+            continue
+
+        distance = calculate_distance(location, warehouse[u'location'])
+        normalized_distance = float(distance) / max_order_to_warehouse_distance
+        if min_distance is None:
+            min_distance = normalized_distance
+        elif min_distance > normalized_distance:
+            min_distance = normalized_distance
+
+    return min_distance

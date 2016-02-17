@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from .common import calculate_distance, calculate_location_score
+from .common import calculate_distance, calculate_location_score, calculate_to_nearest_warehouse
 
 
 class Algorithm(object):
@@ -80,6 +80,9 @@ class Algorithm(object):
         for order in order_list:
             order[u'location_score'] = calculate_location_score(order[u'location'], warehouse_list,
                                                                 max_order_to_warehouse_distance)
+
+            order[u'to_nearest_warehouse'] = calculate_to_nearest_warehouse(order[u'location'], warehouse_list,
+                                                                            max_order_to_warehouse_distance)
 
         self.warehouse_list = warehouse_list
         self.drone_list = drone_list

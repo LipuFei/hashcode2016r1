@@ -20,10 +20,9 @@ if __name__ == '__main__':
 
     w1 = 1.0
     w2 = 1.0
-    w3 = 0.5
+    w3 = 1.0
     angle_threshold = 25.0
 
-    #for angle_threshold in [5.0, 15.0, 25.0, 35.0, 40.0, 50.0]:
     data = parse_file(ds_name)
 
     for wh in sorted(data[u'warehouse_list'], key=lambda w: w[u'location'][1]):
